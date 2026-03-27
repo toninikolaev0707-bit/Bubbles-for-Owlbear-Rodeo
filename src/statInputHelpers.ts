@@ -78,18 +78,18 @@ function restrictValueRange(id: StatMetadataID, value: number): number {
   switch (id) {
     case HEALTH_METADATA_ID:
     case MAX_HEALTH_METADATA_ID:
-      if (value > 9999) {
-        value = 9999;
-      } else if (value < -999) {
-        value = -999;
+      if (value > 99999) {
+        value = 99999;
+      } else if (value < -99999) {
+        value = -99999;
       }
       break;
     case TEMP_HEALTH_METADATA_ID:
     case ARMOR_CLASS_METADATA_ID:
-      if (value > 999) {
-        value = 999;
-      } else if (value < -999) {
-        value = -999;
+      if (value > 99999) {
+        value = 99999;
+      } else if (value < -99999) {
+        value = -99999;
       }
       break;
     default:
