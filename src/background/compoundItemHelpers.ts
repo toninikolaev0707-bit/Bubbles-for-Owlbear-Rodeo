@@ -59,33 +59,35 @@ export function createStatBubble(
     .disableHit(DISABLE_HIT)
     .build();
 
-  const valueText = value.toString();
+const valueText = value.toString();
 
-  const bubbleText = buildText()
-    .position({
-      x: position.x - DIAMETER / 2,
-      y: position.y - DIAMETER / 2 + TEXT_VERTICAL_OFFSET + 0.8,
-    })
-    .plainText(valueText.length > 3 ? String.fromCharCode(0x2026) : valueText)
-    .textAlign("CENTER")
-    .textAlignVertical("MIDDLE")
-    .fontSize(
-      valueText.length === 3 ? REDUCED_CIRCLE_FONT_SIZE : CIRCLE_FONT_SIZE,
-    )
-    .fontFamily(FONT)
-    .textType("PLAIN")
-    .height(CIRCLE_TEXT_HEIGHT)
-    .width(DIAMETER)
-    .fontWeight(400)
-    .attachedTo(item.id)
-    .layer("TEXT")
-    .locked(LOCKED)
-    .lineHeight(LINE_HEIGHT)
-    .id(textId)
-    .visible(item.visible)
-    .disableAttachmentBehavior(DISABLE_ATTACHMENT_BEHAVIORS)
-    .disableHit(DISABLE_HIT)
-    .build();
+let fontSize = Math.floor(DIAMETER / valueText.length * 1.6);
+fontSize = Math.min(fontSize, CIRCLE_FONT_SIZE);
+fontSize = Math.max(fontSize, 6);
+
+const bubbleText = buildText()
+  .position({
+    x: position.x - DIAMETER / 2,
+    y: position.y - DIAMETER / 2 + TEXT_VERTICAL_OFFSET + 0.8,
+  })
+  .plainText(valueText)
+  .textAlign("CENTER")
+  .textAlignVertical("MIDDLE")
+  .fontSize(fontSize)
+  .fontFamily(FONT)
+  .textType("PLAIN")
+  .height(CIRCLE_TEXT_HEIGHT)
+  .width(DIAMETER)
+  .fontWeight(400)
+  .lineHeight(1)
+  .attachedTo(item.id)
+  .layer("TEXT")
+  .locked(LOCKED)
+  .id(textId)
+  .visible(item.visible)
+  .disableAttachmentBehavior(DISABLE_ATTACHMENT_BEHAVIORS)
+  .disableHit(DISABLE_HIT)
+  .build();
 
   return [backgroundShape, bubbleText];
 }
