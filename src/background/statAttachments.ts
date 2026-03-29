@@ -13,6 +13,8 @@ import {
   createHealthBar,
   createNameTag,
   createStatBubble,
+  createTempHpShield,
+  createTempHpDroplet, // ← ВОТ ЭТО ДОБАВЬ
   hpTextId,
   thpBackgroundId,
   thpTextId,
@@ -340,17 +342,16 @@ function createAttachments(item: Image, role: "PLAYER" | "GM", dpi: number) {
 
     const armorPosition = {
       x: origin.x + bounds.width / 2 - DIAMETER / 2 - 2,
-      y: origin.y - DIAMETER / 2 - 4 - (hasHealthBar ? FULL_BAR_HEIGHT : 0),
+      y: origin.y - DIAMETER / 2 - 4 - (hasHealthBar ? FULL_BAR_HEIGHT : 0) - 1.5,
     };
     if (settings.barAtTop) {
       armorPosition.y = origin.y + DIAMETER / 2;
     }
 
     addItemsArray.push(
-      ...createStatBubble(
+      ...createTempHpShield(
         item,
         armorClass,
-        "cornflowerblue", //"#5c8fdb"
         armorPosition,
         acBackgroundId(item.id),
         acTextId(item.id),
@@ -375,21 +376,20 @@ function createAttachments(item: Image, role: "PLAYER" | "GM", dpi: number) {
 
     const tempHealthPosition = {
       x:
-        origin.x +
-        bounds.width / 2 -
-        DIAMETER * (hasArmorClassBubble ? 1.5 : 0.5) -
+        origin.x -
+        bounds.width / 2 +
+        DIAMETER * 0.5 +
         4,
-      y: origin.y - DIAMETER / 2 - 4 - (hasHealthBar ? FULL_BAR_HEIGHT : 0),
+      y: origin.y - DIAMETER / 2 - 4 - (hasHealthBar ? FULL_BAR_HEIGHT : 0) - 2.3,
     };
     if (settings.barAtTop) {
       tempHealthPosition.y = origin.y + DIAMETER / 2;
     }
 
     addItemsArray.push(
-      ...createStatBubble(
+      ...createTempHpDroplet(
         item,
         tempHealth,
-        "olivedrab",
         tempHealthPosition,
         thpBackgroundId(item.id),
         thpTextId(item.id),
