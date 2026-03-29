@@ -244,7 +244,6 @@ function createAttachments(item: Image, role: "PLAYER" | "GM", dpi: number) {
     addTempHealthAttachmentsToArray(deleteItemsArray, item.id);
   } else if (role === "PLAYER" && !statsVisible && settings.showBars) {
     // Display limited stats depending on GM configuration
-    createLimitedHealthBar();
   } else {
     // Display full stats
     const hasHealthBar = createFullHealthBar();
