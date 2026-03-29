@@ -285,7 +285,7 @@ export function createHealthBar(
 
   let healthBackgroundColor = "#1a1a1a";
   if (!statsVisible) {
-    healthBackgroundColor = "black";
+    healthBackgroundColor = "#000000";
   }
 
   const backgroundShape = buildCurve()
@@ -303,7 +303,7 @@ export function createHealthBar(
     .disableHit(DISABLE_HIT)
     .strokeWidth(0)
 	.strokeColor("#000000")
-	.strokeOpacity(0.6)
+	.strokeOpacity(0.85)
     .tension(0)
     .closed(true)
     .points(createRoundedRectangle(barWidth, barHeight, BAR_CORNER_RADIUS))
