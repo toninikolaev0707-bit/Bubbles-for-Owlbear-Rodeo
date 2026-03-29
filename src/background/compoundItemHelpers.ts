@@ -31,6 +31,164 @@ const CIRCLE_FONT_SIZE = DIAMETER - 8;
 const REDUCED_CIRCLE_FONT_SIZE = DIAMETER - 15;
 const CIRCLE_TEXT_HEIGHT = DIAMETER + 0;
 
+export function createTempHpShield(
+  item: Item,
+  value: number,
+  position: { x: number; y: number },
+  backgroundId: string,
+  textId: string,
+): Item[] {
+  const WIDTH = 34;
+  const HEIGHT = 40;
+
+  const shieldShape = buildCurve()
+    .position(position)
+    .points([
+      { x: 0, y: -HEIGHT / 2 },
+      { x: WIDTH / 2, y: -HEIGHT / 4 },
+      { x: WIDTH / 2, y: HEIGHT / 6 },
+      { x: 0, y: HEIGHT / 2 },
+      { x: -WIDTH / 2, y: HEIGHT / 6 },
+      { x: -WIDTH / 2, y: -HEIGHT / 4 },
+    ])
+    .fillColor("#00BFFF")
+    .fillOpacity(0.5)
+    .strokeColor("#FFFFFF")
+    .strokeWidth(2)
+    .strokeOpacity(0.8)
+    .closed(true)
+    .tension(0)
+    .attachedTo(item.id)
+    .layer("ATTACHMENT")
+    .locked(true)
+    .id(backgroundId)
+    .visible(item.visible)
+    .disableAttachmentBehavior(["ROTATION", "VISIBLE", "COPY", "SCALE"])
+    .disableHit(true)
+    .build();
+
+  // 🔥 ВОТ ЭТО ТЫ ИЩЕШЬ
+  const textValue = value.toString();
+
+  let fontSize = Math.floor(WIDTH / textValue.length * 1.6);
+  fontSize = Math.min(fontSize, 18); // максимум
+  fontSize = Math.max(fontSize, 8);  // минимум
+
+  const valueText = buildText()
+    .position({
+      x: position.x - WIDTH / 2,
+      y: position.y - HEIGHT / 2,
+    })
+    .plainText(textValue)
+    .textAlign("CENTER")
+    .textAlignVertical("MIDDLE")
+    .fontSize(fontSize) // ← динамический размер
+    .fontFamily("Roboto, sans-serif")
+    .textType("PLAIN")
+    .fillColor("#FFFFFF")
+    .width(WIDTH)
+    .height(HEIGHT)
+    .zIndex(30000)
+    .attachedTo(item.id)
+    .layer("TEXT")
+    .locked(true)
+    .id(textId)
+    .visible(item.visible)
+    .disableAttachmentBehavior([
+      "ROTATION",
+      "VISIBLE",
+      "COPY",
+      "SCALE",
+    ])
+    .disableHit(true)
+    .build();
+
+  return [shieldShape, valueText];
+}
+
+
+export function createTempHpDroplet(
+  item: Item,
+  value: number,
+  position: { x: number; y: number },
+  backgroundId: string,
+  textId: string,
+): Item[] {
+  const SIZE = 42;
+
+  const diamond = buildCurve()
+    .position(position)
+    .points([
+      { x: 0, y: -SIZE / 2 },
+      { x: SIZE / 2.5, y: 0 },
+      { x: 0, y: SIZE / 2 },
+      { x: -SIZE / 2.5, y: 0 },
+    ])
+	.tension(0) // ← ВОТ ЭТО КЛЮЧ
+    .fillColor("#5BFE79")
+    .fillOpacity(0.5)
+    .strokeColor("#FFFFFF")
+    .strokeWidth(2)
+    .strokeOpacity(0.8)
+    .closed(true)
+    .attachedTo(item.id)
+    .layer("ATTACHMENT")
+    .locked(true)
+    .id(backgroundId)
+    .visible(item.visible)
+    .disableAttachmentBehavior([
+      "ROTATION",
+      "VISIBLE",
+      "COPY",
+      "SCALE",
+    ])
+    .disableHit(true)
+    .build();
+
+	
+	const valueText = value.toString();
+
+
+	let fontSize = Math.floor(SIZE / valueText.length * 0.8);
+	fontSize = Math.min(fontSize, SIZE - 24);
+	fontSize = Math.max(fontSize, 8);
+
+  const text = buildText()
+    .position({
+      x: position.x - SIZE / 2,
+      y: position.y - SIZE / 2,
+    })
+    .plainText(value.toString())
+    .textAlign("CENTER")
+    .textAlignVertical("MIDDLE")
+	
+
+	
+	
+	
+    .fontSize(fontSize)
+    .fontFamily("Roboto, sans-serif")
+    .textType("PLAIN")
+    .fillColor("#FFFFFF")
+    .width(SIZE)
+    .height(SIZE)
+    .attachedTo(item.id)
+    .layer("TEXT")
+    .locked(true)
+    .id(textId)
+    .visible(item.visible)
+    .disableAttachmentBehavior([
+      "ROTATION",
+      "VISIBLE",
+      "COPY",
+      "SCALE",
+    ])
+    .disableHit(true)
+    .build();
+
+  return [diamond, text];
+}
+
 /** Creates Stat Bubble component items */
 export function createStatBubble(
   item: Item,
@@ -45,10 +203,10 @@ export function createStatBubble(
     .height(DIAMETER)
     .shapeType("CIRCLE")
     .fillColor(color)
-    .fillOpacity(BACKGROUND_OPACITY)
+    .fillOpacity(0.25) // почти прозрачный
     .strokeColor(color)
-    .strokeOpacity(0.5)
-    .strokeWidth(0)
+    .strokeOpacity(0.9)
+    .strokeWidth(2)
     .position({ x: position.x, y: position.y })
     .attachedTo(item.id)
     .layer("ATTACHMENT")
@@ -94,10 +252,11 @@ const bubbleText = buildText()
 
 // Constants used in createHealthBar()
 const BAR_PADDING = 2;
-const HEALTH_OPACITY = 0.5;
-export const FULL_BAR_HEIGHT = 20;
+const HEALTH_OPACITY = 0.7;
+export const FULL_BAR_HEIGHT = 18;
 export const SHORT_BAR_HEIGHT = 12;
-const BAR_CORNER_RADIUS = FULL_BAR_HEIGHT / 2;
+const BAR_CORNER_RADIUS = 2;
+
 
 /** Creates health bar component items */
 export function createHealthBar(
@@ -124,7 +283,7 @@ export function createHealthBar(
   const barTextHeight = barHeight + 0;
   const setVisibilityProperty = item.visible;
 
-  let healthBackgroundColor = "#A4A4A4";
+  let healthBackgroundColor = "#1a1a1a";
   if (!statsVisible) {
     healthBackgroundColor = "black";
   }
@@ -132,6 +291,7 @@ export function createHealthBar(
   const backgroundShape = buildCurve()
     .fillColor(healthBackgroundColor)
     .fillOpacity(BACKGROUND_OPACITY)
+	
     .position({ x: position.x, y: position.y })
     .zIndex(10000)
     .attachedTo(item.id)
@@ -142,6 +302,8 @@ export function createHealthBar(
     .disableAttachmentBehavior(DISABLE_ATTACHMENT_BEHAVIORS)
     .disableHit(DISABLE_HIT)
     .strokeWidth(0)
+	.strokeColor("#000000")
+	.strokeOpacity(0.6)
     .tension(0)
     .closed(true)
     .points(createRoundedRectangle(barWidth, barHeight, BAR_CORNER_RADIUS))
@@ -149,8 +311,19 @@ export function createHealthBar(
 
   const healthFillPortion = getFillPortion(health, maxHealth, segments);
 
+  const healthRatio = health / maxHealth;
+
+  let fillColor = "#FF5451"; // зелёный
+
+  if (healthRatio < 0.5) fillColor = "#C35553"; // оранжевый
+  if (healthRatio < 0.25) fillColor = "#95514F"; // красный
+
+
   const fillShape = buildCurve()
-    .fillColor("red")
+  
+  
+  
+    .fillColor(fillColor)
     .fillOpacity(HEALTH_OPACITY)
     .zIndex(20000)
     .position({ x: position.x, y: position.y })
@@ -180,11 +353,11 @@ export function createHealthBar(
   }
 
   const healthText = buildText()
-    .position({ x: position.x, y: position.y + TEXT_VERTICAL_OFFSET })
+    .position({ x: position.x, y: position.y + TEXT_VERTICAL_OFFSET + 0.25})
     .plainText(`${health}/${maxHealth}`)
     .textAlign("CENTER")
     .textAlignVertical("TOP")
-    .fontSize(FONT_SIZE)
+    .fontSize(FONT_SIZE - 4)
     .fontFamily(FONT)
     .textType("PLAIN")
     .height(barTextHeight)
