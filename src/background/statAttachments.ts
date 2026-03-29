@@ -242,6 +242,9 @@ function createAttachments(item: Image, role: "PLAYER" | "GM", dpi: number) {
     addHealthAttachmentsToArray(deleteItemsArray, item.id);
     addArmorAttachmentsToArray(deleteItemsArray, item.id);
     addTempHealthAttachmentsToArray(deleteItemsArray, item.id);
+  } else if (role === "PLAYER" && !statsVisible && settings.showBars) {
+    // Display limited stats depending on GM configuration
+    createLimitedHealthBar();
   } else {
     // Display full stats
     const hasHealthBar = createFullHealthBar();
@@ -294,19 +297,6 @@ function createAttachments(item: Image, role: "PLAYER" | "GM", dpi: number) {
       return;
     }
 
-    deleteItemsArray.push(`${item.id}health-label`);
-    addItemsArray.push(
-      ...createHealthBar(
-        item,
-        bounds,
-        health,
-        maxHealth,
-        statsVisible,
-        origin,
-        "short",
-        settings.segments,
-      ),
-    );
   }
 
   /**
