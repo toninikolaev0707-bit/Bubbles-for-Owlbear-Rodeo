@@ -41,17 +41,19 @@ export function createTempHpShield(
   const WIDTH = 34;
   const HEIGHT = 40;
 
+
+	
   const shieldShape = buildCurve()
     .position(position)
     .points([
       { x: 0, y: -HEIGHT / 2 },
-      { x: WIDTH / 2, y: -HEIGHT / 4 },
+      { x: WIDTH / 2, y: -HEIGHT / 3 },
       { x: WIDTH / 2, y: HEIGHT / 6 },
       { x: 0, y: HEIGHT / 2 },
       { x: -WIDTH / 2, y: HEIGHT / 6 },
-      { x: -WIDTH / 2, y: -HEIGHT / 4 },
+      { x: -WIDTH / 2, y: -HEIGHT / 3 },
     ])
-    .fillColor("#00BFFF")
+    .fillColor("#0096C9")
     .fillOpacity(0.5)
     .strokeColor("#FFFFFF")
     .strokeWidth(2)
@@ -66,6 +68,8 @@ export function createTempHpShield(
     .disableAttachmentBehavior(["ROTATION", "VISIBLE", "COPY", "SCALE"])
     .disableHit(true)
     .build();
+
+
 
   // 🔥 ВОТ ЭТО ТЫ ИЩЕШЬ
   const textValue = value.toString();
@@ -119,7 +123,8 @@ export function createTempHpDroplet(
   const diamond = buildCurve()
     .position(position)
     .points([
-      { x: 0, y: -SIZE / 2 },
+      { x: 0, y: -SIZE / 2.5 },
+      { x: 0, y: -SIZE / 2.5 },
       { x: SIZE / 2.5, y: 0 },
       { x: 0, y: SIZE / 2 },
       { x: -SIZE / 2.5, y: 0 },
@@ -156,7 +161,7 @@ export function createTempHpDroplet(
   const text = buildText()
     .position({
       x: position.x - SIZE / 2,
-      y: position.y - SIZE / 2,
+      y: position.y - SIZE / 2 + 2,
     })
     .plainText(value.toString())
     .textAlign("CENTER")
