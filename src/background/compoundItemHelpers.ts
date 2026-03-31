@@ -59,7 +59,7 @@ export function createTempHpShield(
     .strokeWidth(2)
     .strokeOpacity(0.8)
     .closed(true)
-    .tension(0)
+    .tension(0.1)
     .attachedTo(item.id)
     .layer("ATTACHMENT")
     .locked(true)
@@ -118,18 +118,35 @@ export function createTempHpDroplet(
   backgroundId: string,
   textId: string,
 ): Item[] {
-  const SIZE = 42;
+  const SIZE = 38;
+
+
+  const t = SIZE / 5;   // толщина перекладин
+  const h = SIZE / 2.3;   // половина размера
+
 
   const diamond = buildCurve()
     .position(position)
-    .points([
-      { x: 0, y: -SIZE / 2.5 },
-      { x: 0, y: -SIZE / 2.5 },
-      { x: SIZE / 2.5, y: 0 },
-      { x: 0, y: SIZE / 2 },
-      { x: -SIZE / 2.5, y: 0 },
-    ])
-	.tension(0) // ← ВОТ ЭТО КЛЮЧ
+	.points([
+	  { x: -t, y: -h },
+	  { x: t, y: -h },
+
+	  { x: t, y: -t },
+	  { x: h, y: -t },
+
+	  { x: h, y: t },
+	  { x: t, y: t },
+
+	  { x: t, y: h },
+	  { x: -t, y: h },
+
+	  { x: -t, y: t },
+	  { x: -h, y: t },
+
+	  { x: -h, y: -t },
+	  { x: -t, y: -t },
+	])
+	.tension(1) // ← ВОТ ЭТО КЛЮЧ
     .fillColor("#5BFE79")
     .fillOpacity(0.5)
     .strokeColor("#FFFFFF")
@@ -161,7 +178,7 @@ export function createTempHpDroplet(
   const text = buildText()
     .position({
       x: position.x - SIZE / 2,
-      y: position.y - SIZE / 2 + 2,
+      y: position.y - SIZE / 2 + 0.5,
     })
     .plainText(value.toString())
     .textAlign("CENTER")
@@ -260,7 +277,7 @@ const BAR_PADDING = 2;
 const HEALTH_OPACITY = 0.7;
 export const FULL_BAR_HEIGHT = 18;
 export const SHORT_BAR_HEIGHT = 12;
-const BAR_CORNER_RADIUS = 2;
+const BAR_CORNER_RADIUS = 20;
 
 
 /** Creates health bar component items */
@@ -285,7 +302,7 @@ export function createHealthBar(
     y: origin.y - barHeight - 2,
   };
   const barWidth = bounds.width - BAR_PADDING * 2;
-  const barTextHeight = barHeight + 0;
+  const barTextHeight = barHeight + 2;
   const setVisibilityProperty = item.visible;
 
   let healthBackgroundColor = "#1a1a1a";
@@ -381,6 +398,8 @@ export function createHealthBar(
 
   return [backgroundShape, fillShape, healthText];
 }
+
+
 
 // Constants used in createNameTag()
 export const APPROXIMATE_LETTER_WIDTH = 12;
